@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Data Analytics on Motor Vehicle Registration, Traffic Violation, and Driver Licensing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/png" href="static/logo1.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    
+    
+
+    <script>
+            function filterCharts() {
+                let filter = document.getElementById("chart-filter").value;
+                let charts = document.querySelectorAll(".charts");
+        
+                if (filter === "hide-all") {
+                    charts.forEach(chart => chart.style.display = "none");
+                } else if (filter === "show-all") {
+                    charts.forEach(chart => chart.style.display = "block");
+                } else {
+                    charts.forEach(chart => {
+                        chart.style.display = chart.querySelector("canvas").id === filter ? "block" : "none";
+                    });
+                }
+            }
+
+        function moveToCenter(element) {
+            // Reset all topics
+            let topics = document.querySelectorAll(".topic");
+            topics.forEach(topic => {
+                topic.style.position = "static";
+                topic.style.transform = "none";
+                topic.style.transition = "all 0.5s ease-in-out";
+                topic.style.zIndex = "1";
+                topic.style.width = "30%";
+            });
+    
+            // Move clicked topic to center
+            element.style.position = "fixed";
+            element.style.top = "50%";
+            element.style.left = "50%";
+            element.style.transform = "translate(-50%, -50%) scale(1.2)";
+            element.style.zIndex = "100";
+            element.style.width = "50%";
+            element.style.background = "rgba(255, 255, 255, 0.8)";
+            element.style.color = "black";
+            element.style.border = "2px solid white";
+            element.style.padding = "20px";
+            element.style.borderRadius = "10px";
+            element.style.boxShadow = "0 0 20px rgba(255, 255, 255, 0.5)";
+        }
+    
+        // Function to reset all topics when clicking outside
+        document.addEventListener("click", function(event) {
+            let topics = document.querySelectorAll(".topic");
+            if (!event.target.closest(".topic")) {
+                topics.forEach(topic => {
+                    topic.style.position = "static";
+                    topic.style.transform = "none";
+                    topic.style.transition = "all 0.5s ease-in-out";
+                    topic.style.zIndex = "1";
+                    topic.style.width = "30%";
+                    topic.style.background = "rgba(255, 255, 255, 0.2)";
+                    topic.style.color = "white";
+                    topic.style.border = "none";
+                    topic.style.boxShadow = "none";
+                });
+            }
+        });
+
+        // Function to Reset Page (Scroll to Top)
+        function resetPage() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // Function to Scroll to a Specific Section
+        function scrollToSection(sectionId) {
+            let section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
+        // Scroll to About Us Section
+    function scrollToAbout() {
+        document.getElementById("about-us").scrollIntoView({ behavior: "smooth" });
+    }
+
+    </script>
+</head>
+
+<body>
+    <video autoplay muted loop id="bg-video">
+        <source src="static/background2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="content">
+        <header>
+            <div class="header-left">
+                <img src="static/logo1.png" alt="Logo" id="logo" style="height: 80px; cursor: pointer;" onclick="resetPage()">
+                <h3>Comprehensive Data Analytics on Motor Vehicle Registration, Traffic Violation, and Driver Licensing</h3>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="resetPage()">Home</a></li>
+                    <li><a href="#" onclick="scrollToSection('about-us')">About Us</a></li>
+                    <li><a href="#" onclick="showContactPopup()">Contact</a></li>
+                    <li>
+                        <select id="chart-filter" onchange="filterCharts()">
+                            <option value="show-all">Show All</option>
+                            <option value="hide-all">Hide All</option>
+                            <option value="genderChart">Gender Distribution</option>
+                            <option value="topStatesChart">Top 10 States</option>
+                            <option value="ageChart">Age Distribution</option>
+                            <option value="autoChart">Auto Registrations</option>
+                            <option value="busesTrucksChart">Buses & Trucks</option>
+                            <option value="motorcycleChart">Motorcycle Registrations</option>
+                            <option value="subAgenciesChart">Sub Agencies</option>
+                            <option value="violationsChart">Traffic Violations</option>
+                            <option value="vehicleTypesChart">Vehicle Types</option>
+                        </select>
+                        
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <section class="welcome">
+            <p>"Safe driving today ensures a brighter future for everyone on the road."</p>
+        </section>
+
+        
+
+                        
+        <main>
+            
+            <div class="charts-container">
+                <div class="charts" onclick="openChartModal('genderChart', 'Year', 'Gebder Comparison Male vs Femlae Licensed Driver')">
+                    <h3>Gender Distribution 2000 to 2020</h3>
+                    <p>Shows the percentage of male and female licensed drivers.</p>
+                    <canvas id="genderChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('topStatesChart', 'State', 'The Top 10 State with Highest Licensed Drivers')">
+                    <h3>Top 10 States 2020</h3>
+                    <p>Displays the top 10 states with the highest licensed drivers.</p>
+                    <canvas id="topStatesChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('ageChart', 'Age', 'The Age Distribution from year to year')">
+                    <h3>Age Distribution 2020</h3>
+                    <p>Represents the distribution of drivers by age groups.</p>
+                    <canvas id="ageChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('autoChart', 'Autos', 'The Top 10 State with Highest Registered Automobile')">
+                    <h3>Auto Registrations U.S. 1900 - 2020</h3>
+                    <p>Top 10 states with the highest registered automobiles.</p>
+                    <canvas id="autoChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('busesTrucksChart', 'BUSTRUCK', 'Total of bus and trucks from year to year')">
+                    <h3>Buses & Trucks U.S. 2010 - 2020</h3>
+                    <p>Comparison of registered buses and trucks from 2010-2020.</p>
+                    <canvas id="busesTrucksChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('motorcycleChart', 'State', 'The Top 10 State with Highest Registered Motorcycle')">
+                    <h3>Motorcycle Registrations U.S. 2020</h3>
+                    <p>Top 10 states with the highest motorcycle registrations.</p>
+                    <canvas id="motorcycleChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('subAgenciesChart', 'Subagencies', 'The top 5 subagencies with highest Recorded Violation')">
+                    <h3>Sub Agencies 2020 - 2024</h3>
+                    <p>The top 5 subagencies with highest Recorded Violation.</p>
+                    <canvas id="subAgenciesChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('violationsChart', 'Traffic_Violation', 'The Top 10 Common Violation')">
+                    <h3>Traffic Violations 2020 - 2024</h3>
+                    <p>Top 10 most common traffic violations reported.</p>
+                    <canvas id="violationsChart"></canvas>
+                </div>
+            
+                <div class="charts" onclick="openChartModal('vehicleTypesChart', 'Vehicletype', 'The Top 5 Most popular Vehicletype')">
+                    <h3>Vehicle Types 2020 - 2024</h3>
+                    <p>Top 5 Vehicle type with highest Violation .</p>
+                    <canvas id="vehicleTypesChart"></canvas>
+                </div>  
+            </div>
+            
+        </main>
+        <br></br>
+        <br></br>
+        <br></br>
+
+        
+        <div class="footer-content">
+            <div class="footer-section about-us">
+                <h3><i class="fas fa-users"></i> About Us</h3>
+                <p>We are a dedicated data analytics firm specializing in motor vehicle registration, traffic violations, and driver licensing.</p>
+                <p>Our goal is to provide insightful, data-driven solutions that enhance road safety, streamline compliance, and improve motor vehicle administration.</p>
+            </div>
+        
+            <div class="footer-section what-we-do">
+                <h3><i class="fas fa-chart-line"></i> What We Do</h3>
+                <ul>
+                    <li>Analyze trends in vehicle registration & ownership.</li>
+                    <li>Identify patterns in traffic violations to improve enforcement.</li>
+                    <li>Enhance driver licensing processes through data insights.</li>
+                    <li>Develop interactive dashboards for decision-makers.</li>
+                    <li>Support policy development with data-backed recommendations.</li>
+                </ul>
+            </div>
+        
+            <div class="footer-section why-choose-us">
+                <h3><i class="fas fa-check-circle"></i> Why Choose Us?</h3>
+                <p><b>✔ Expertise:</b> Cutting-edge analytics for precise insights.</p>
+                <p><b>✔ Comprehensive Reports:</b> Data-driven decisions for safer roads.</p>
+                <p><b>✔ Automation & Efficiency:</b> Streamlined processes to reduce workload.</p>
+                <p><b>✔ Custom Solutions:</b> Tailored analytics for unique client needs.</p>
+            </div>
+        
+            <div class="footer-section location">
+                <h3><i class="fas fa-map-marker-alt"></i> Where Are We?</h3>
+                <p>We operate globally, serving government agencies, businesses, and researchers with reliable transportation data analytics.</p>
+            </div>
+        
+            <div class="footer-section data-source">
+                <h3><i class="fas fa-database"></i> Data Source</h3>
+                <p><a href="https://data.gov/" target="_blank">https://data.gov/</a></p>
+            </div>
+        </div>
+        
+            <br></br>
+
+
+            
+            <footer>
+            
+                <p>&copy; 2025 author: Eliver Gio G. Maquilang. All rights reserved.</p>
+        
+        </footer>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+
+.content {
+    position: relative;
+    z-index: 3;
+    padding-top: 40px;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+}
+
+h1 {
+    text-align: left;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 10px 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.welcome {
+    margin: 160px auto 20px;
+    font-size: 20px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 80%;
+}
+
+.topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.topic {
+    width: 30%;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.topic:hover {
+    transform: scale(1.05);
+}
+
+.sub-container {
+    margin-top: 10px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    margin-top: 20px;
+}
+</style>
